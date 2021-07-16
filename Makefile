@@ -4,18 +4,21 @@ CFLAGS=-c -g -Wall `root-config --cflags`
 
 LDFLAGS=`root-config --glibs`
 
-SOURCES=hello_world_ROOT.cc 
+all: write_ROOT_file read_ROOT_file fill_histogram
 
-OBJECTS=$(SOURCES:.cc=.o)
-	EXECUTABLE=hello_world_ROOT
+write_ROOT_file: write_ROOT_file.cc
+	$(CC) $(CFLAGS) -o write_ROOT_file.o write_ROOT_file.cc
+	$(CC) $(LDFLAGS) -o write_ROOT_file write_ROOT_file.o
 
-all: $(SOURCES) $(EXECUTABLE)
+read_ROOT_file: read_ROOT_file.cc
+	$(CC) $(CFLAGS) -o read_ROOT_file.o read_ROOT_file.cc
+	$(CC) $(LDFLAGS) -o read_ROOT_file read_ROOT_file.o
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
-
-.cc.o:
-	$(CC) $(CFLAGS) $< -o $@
+fill_histogram: fill_histogram.cc
+	$(CC) $(CFLAGS) -o fill_histogram.o fill_histogram.cc
+	$(CC) $(LDFLAGS) -o fill_histogram fill_histogram.o
 
 clean:
-	rm -f ./*~ ./*.o ./hello_world_ROOT
+	rm -f ./*~ ./*.o ./write_ROOT_file
+	rm -f ./*~ ./*.o ./read_ROOT_file
+	rm -f ./*~ ./*.o ./fill_histogram
